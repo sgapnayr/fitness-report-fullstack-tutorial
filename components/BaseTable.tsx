@@ -15,7 +15,7 @@ function BaseTable() {
       fitnessReportId: "FR-001",
       fitnessReportName: "Fitness Report 1",
       fitnessReportDate: "2021-09-01",
-      fitnessReportTrainer: "Sarah Summer",
+      fitnessReportTrainer: "Sarah Summers",
       fitnessReportClient: "Brad Smith",
       fitnessReportTrainingPlan: [
         { workout: "Pushups", sets: 3, reps: 10, weight: 0 },
