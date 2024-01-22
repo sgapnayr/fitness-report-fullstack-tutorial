@@ -9,6 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { FitnessReport, TrainingPlan } from "@prisma/client";
+
 function BaseTable() {
   const fitnessReports = [
     {
@@ -17,28 +19,18 @@ function BaseTable() {
       fitnessReportDate: "2021-09-01",
       fitnessReportTrainer: "Sarah Summer",
       fitnessReportClient: "Brad Smith",
-      fitnessReportTrainingPlan: [
-        { workout: "Pushups", sets: 3, reps: 10, weight: 0 },
-        { workout: "Pullups", sets: 3, reps: 10, weight: 0 },
-        { workout: "Squats", sets: 3, reps: 10, weight: 135 },
-        { workout: "Bench Press", sets: 3, reps: 10, weight: 135 },
+      trainingPlans: [
+        {
+          trainingPlanId: 1,
+          trainingPlanWorkout: "Pushups",
+          trainingPlanSets: 3,
+          trainingPlanReps: 10,
+          trainingPlanWeight: 0,
+          fitnessReportId: "FR-001",
+        },
       ],
-    },
-    {
-      fitnessReportId: "FR-002",
-      fitnessReportName: "Fitness Report 2",
-      fitnessReportDate: "2021-09-02",
-      fitnessReportTrainer: "Sarah Summers",
-      fitnessReportClient: "Tyler Jones",
-      fitnessReportTrainingPlan: [
-        { workout: "Pushups", sets: 3, reps: 10, weight: 0 },
-        { workout: "Pullups", sets: 3, reps: 10, weight: 0 },
-        { workout: "Squats", sets: 3, reps: 10, weight: 135 },
-        { workout: "Bench Press", sets: 3, reps: 10, weight: 135 },
-        { workout: "Deadlifts", sets: 3, reps: 10, weight: 135 },
-      ],
-    },
-  ];
+    } as FitnessReport,
+  ] as FitnessReport[];
 
   return (
     <div className="w-full">
@@ -54,23 +46,25 @@ function BaseTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {fitnessReports.map((fitnessReport, idx) => {
-            return (
-              <TableRow key={fitnessReport.fitnessReportId}>
-                <TableCell className="font-medium">
-                  {fitnessReport.fitnessReportDate}
-                </TableCell>
-                <TableCell className="font-bold">
-                  {fitnessReport.fitnessReportName}
-                </TableCell>
-                <TableCell>{fitnessReport.fitnessReportClient}</TableCell>
-                <TableCell>{fitnessReport.fitnessReportTrainer}</TableCell>
-                <TableCell className="text-right">
-                  {fitnessReport.fitnessReportTrainingPlan.length}
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {fitnessReports.map(
+            (fitnessReport: any & { trainingPlans: TrainingPlan }) => {
+              return (
+                <TableRow key={fitnessReport.fitnessReportId}>
+                  <TableCell className="font-medium">
+                    {fitnessReport.fitnessReportDate}
+                  </TableCell>
+                  <TableCell className="font-bold">
+                    {fitnessReport.fitnessReportName}
+                  </TableCell>
+                  <TableCell>{fitnessReport.fitnessReportClient}</TableCell>
+                  <TableCell>{fitnessReport.fitnessReportTrainer}</TableCell>
+                  <TableCell className="text-right">
+                    {fitnessReport.trainingPlans?.length}
+                  </TableCell>
+                </TableRow>
+              );
+            }
+          )}
         </TableBody>
       </Table>
     </div>
