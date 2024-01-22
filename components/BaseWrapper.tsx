@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import BaseNavigation from "./BaseNavigation";
 
 export default function BaseWrapper({
   children,
@@ -7,6 +10,7 @@ export default function BaseWrapper({
 }) {
   return (
     <div className="w-full flex-1 flex-col min-h-screen justify-center items-center">
+      <BaseNavigation />
       {children}
     </div>
   );
