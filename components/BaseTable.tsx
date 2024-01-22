@@ -1,4 +1,8 @@
-import React from "react";
+"use client";
+
+import axios from "axios";
+import { FitnessReport, TrainingPlan } from "@prisma/client";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -9,28 +13,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { FitnessReport, TrainingPlan } from "@prisma/client";
-
 function BaseTable() {
-  const fitnessReports = [
-    {
-      fitnessReportId: "FR-001",
-      fitnessReportName: "Fitness Report 1",
-      fitnessReportDate: "2021-09-01",
-      fitnessReportTrainer: "Sarah Summer",
-      fitnessReportClient: "Brad Smith",
-      trainingPlans: [
-        {
-          trainingPlanId: 1,
-          trainingPlanWorkout: "Pushups",
-          trainingPlanSets: 3,
-          trainingPlanReps: 10,
-          trainingPlanWeight: 0,
-          fitnessReportId: "FR-001",
-        },
-      ],
-    } as FitnessReport,
-  ] as FitnessReport[];
+  const [fitnessReports, setFitnessReports] = useState<FitnessReport[]>([]);
+
+  async function fetchFitnessReports() {
+    const response = await axios.get("/api/fitness-reports");
+    setFitnessReports(response.data);
+  }
+
+  useEffect(() => {
+    fetchFitnessReports();
+  }, []);
 
   return (
     <div className="w-full">
