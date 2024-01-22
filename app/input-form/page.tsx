@@ -2,6 +2,7 @@
 
 import BaseInput from "@/components/BaseInput";
 import BaseWrapper from "@/components/BaseWrapper";
+import { FitnessReport } from "@prisma/client";
 import { ChangeEvent, useState } from "react";
 import { z } from "zod";
 
