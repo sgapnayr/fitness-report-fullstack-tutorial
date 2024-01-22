@@ -3,6 +3,7 @@
 import axios from "axios";
 import { FitnessReport } from "@prisma/client";
 import { useState, useEffect } from "react";
+import BaseModal from "./BaseModal";
 import {
   Table,
   TableBody,
@@ -25,6 +26,11 @@ function BaseTable() {
     fetchFitnessReports();
   }, []);
 
+  async function handleGetReport(fitnessReportId: string) {
+    const response = await axios.get(`/api/report/${fitnessReportId}`);
+    console.log(response);
+  }
+
   return (
     <div className="w-full">
       <Table>
@@ -36,12 +42,16 @@ function BaseTable() {
             <TableHead>Client</TableHead>
             <TableHead>Trainer</TableHead>
             <TableHead className="text-right"># of Workouts</TableHead>
+            <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {fitnessReports.map((fitnessReport: FitnessReport) => {
             return (
-              <TableRow key={fitnessReport.fitnessReportId}>
+              <TableRow
+                onClick={() => handleGetReport(fitnessReport.fitnessReportId)}
+                key={fitnessReport.fitnessReportId}
+              >
                 <TableCell className="font-medium">
                   {fitnessReport.fitnessReportDate}
                 </TableCell>
@@ -52,6 +62,9 @@ function BaseTable() {
                 <TableCell>{fitnessReport.fitnessReportTrainer}</TableCell>
                 <TableCell className="text-right">
                   {fitnessReport.fitnessReportNumberOfWorkouts}
+                </TableCell>
+                <TableCell className="text-right">
+                  <BaseModal fitnessReport={fitnessReport}>Open</BaseModal>
                 </TableCell>
               </TableRow>
             );

@@ -6,6 +6,8 @@ import { FitnessReport } from "@prisma/client";
 import axios from "axios";
 import { ChangeEvent, useState } from "react";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function InputForm() {
   // *************************** STATE & ERRORS *************************** //
@@ -41,6 +43,7 @@ export default function InputForm() {
   }
 
   // *************************** FORM SUBMIT *************************** //
+  const router = useRouter();
   const handleSubmit = async () => {
     const validationResult = fitnessReportSchema.safeParse(formData);
 
@@ -49,15 +52,24 @@ export default function InputForm() {
       return;
     }
 
-    await axios.post("/api/fitness-reports", {
-      fitnessReportName: formData.fitnessReportName,
-      fitnessReportDate: formData.fitnessReportDate,
-      fitnessReportTrainer: formData.fitnessReportTrainer,
-      fitnessReportClient: formData.fitnessReportClient,
-      fitnessReportNumberOfWorkouts: formData.fitnessReportNumberOfWorkouts,
-    });
+    try {
+      await axios.post("/api/fitness-reports", {
+        fitnessReportName: formData.fitnessReportName,
+        fitnessReportDate: formData.fitnessReportDate,
+        fitnessReportTrainer: formData.fitnessReportTrainer,
+        fitnessReportClient: formData.fitnessReportClient,
+        fitnessReportNumberOfWorkouts: formData.fitnessReportNumberOfWorkouts,
+      });
 
-    setErrors(createDefaultFormData());
+      toast.success("Report created successfully!", { duration: 2000 });
+      router.push("/");
+
+      setErrors(createDefaultFormData());
+    } catch (error) {
+      toast.error("Failed to create report. Please try again.", {
+        duration: 2000,
+      });
+    }
   };
 
   // *************************** TEMPLATE *************************** //
