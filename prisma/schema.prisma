@@ -11,20 +11,11 @@ datasource db {
 }
 
 model FitnessReport {
-  fitnessReportId    String         @id
-  fitnessReportName  String
-  fitnessReportDate  String
-  fitnessReportTrainer String
-  fitnessReportClient String
-  trainingPlans      TrainingPlan[]
+  fitnessReportId               String         @id @default(uuid())
+  fitnessReportName             String
+  fitnessReportDate             String
+  fitnessReportTrainer          String
+  fitnessReportClient           String
+  fitnessReportNumberOfWorkouts String
 }
 
-model TrainingPlan {
-  trainingPlanId                 Int            @id @default(autoincrement())
-  trainingPlanWorkout            String
-  trainingPlanSets               Int
-  trainingPlanReps               Int
-  trainingPlanWeight             Int
-  fitnessReportId    String
-  fitnessReport      FitnessReport  @relation(fields: [fitnessReportId], references: [fitnessReportId])
-}

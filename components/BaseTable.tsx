@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { FitnessReport, TrainingPlan } from "@prisma/client";
+import { FitnessReport } from "@prisma/client";
 import { useState, useEffect } from "react";
 import {
   Table,
@@ -39,25 +39,23 @@ function BaseTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {fitnessReports.map(
-            (fitnessReport: any & { trainingPlans: TrainingPlan }) => {
-              return (
-                <TableRow key={fitnessReport.fitnessReportId}>
-                  <TableCell className="font-medium">
-                    {fitnessReport.fitnessReportDate}
-                  </TableCell>
-                  <TableCell className="font-bold">
-                    {fitnessReport.fitnessReportName}
-                  </TableCell>
-                  <TableCell>{fitnessReport.fitnessReportClient}</TableCell>
-                  <TableCell>{fitnessReport.fitnessReportTrainer}</TableCell>
-                  <TableCell className="text-right">
-                    {fitnessReport.trainingPlans?.length}
-                  </TableCell>
-                </TableRow>
-              );
-            }
-          )}
+          {fitnessReports.map((fitnessReport: FitnessReport) => {
+            return (
+              <TableRow key={fitnessReport.fitnessReportId}>
+                <TableCell className="font-medium">
+                  {fitnessReport.fitnessReportDate}
+                </TableCell>
+                <TableCell className="font-bold">
+                  {fitnessReport.fitnessReportName}
+                </TableCell>
+                <TableCell>{fitnessReport.fitnessReportClient}</TableCell>
+                <TableCell>{fitnessReport.fitnessReportTrainer}</TableCell>
+                <TableCell className="text-right">
+                  {fitnessReport.fitnessReportNumberOfWorkouts}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>

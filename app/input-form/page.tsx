@@ -3,6 +3,7 @@
 import BaseInput from "@/components/BaseInput";
 import BaseWrapper from "@/components/BaseWrapper";
 import { FitnessReport } from "@prisma/client";
+import axios from "axios";
 import { ChangeEvent, useState } from "react";
 import { z } from "zod";
 
@@ -24,12 +25,18 @@ export default function InputForm() {
     fitnessReportName: z.string().min(1, "Report Name is required"),
     fitnessReportDate: z.string().min(1, "Report Date is required"),
     fitnessReportTrainer: z.string().min(1, "Trainer is required"),
+    fitnessReportClient: z.string().min(1, "Client is required"),
+    fitnessReportNumberOfWorkouts: z
+      .string()
+      .min(0, "Number of workouts is required"),
   });
   function createDefaultFormData(): z.infer<typeof fitnessReportSchema> {
     return {
       fitnessReportName: "",
       fitnessReportDate: "",
       fitnessReportTrainer: "",
+      fitnessReportClient: "",
+      fitnessReportNumberOfWorkouts: "",
     };
   }
 
@@ -41,6 +48,14 @@ export default function InputForm() {
       setErrors(validationResult.error.flatten().fieldErrors as never);
       return;
     }
+
+    await axios.post("/api/fitness-reports", {
+      fitnessReportName: formData.fitnessReportName,
+      fitnessReportDate: formData.fitnessReportDate,
+      fitnessReportTrainer: formData.fitnessReportTrainer,
+      fitnessReportClient: formData.fitnessReportClient,
+      fitnessReportNumberOfWorkouts: formData.fitnessReportNumberOfWorkouts,
+    });
 
     setErrors(createDefaultFormData());
   };
@@ -75,6 +90,24 @@ export default function InputForm() {
           placeholder="Trainer"
           onChange={handleChange}
           error={errors.fitnessReportTrainer}
+          onKeyPress={handleKeyPress}
+        />
+        <BaseInput
+          type="text"
+          name="fitnessReportClient"
+          value={formData.fitnessReportClient}
+          placeholder="Client Name"
+          onChange={handleChange}
+          error={errors.fitnessReportClient}
+          onKeyPress={handleKeyPress}
+        />
+        <BaseInput
+          type="text"
+          name="fitnessReportNumberOfWorkouts"
+          value={formData.fitnessReportNumberOfWorkouts}
+          placeholder="Number of Workouts"
+          onChange={handleChange}
+          error={errors.fitnessReportNumberOfWorkouts}
           onKeyPress={handleKeyPress}
         />
 
